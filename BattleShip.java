@@ -49,8 +49,8 @@ public class BattleShip {
                 int Row = Input.nextInt();
                 if (ViewDirection.equals("right")) {
                     try {
-                        for (int j = Column; j < ShipsTypes.get(Ship).Length + Column; j++) {
-                            Player[Row][Column] = 1;
+                        for (int j = 0; j < ShipsTypes.get(Ship).Length; j++) {
+                            Player[Row][Column + j] = 1;
                         }
                     } catch (Exception e) {
                         System.out.println("the" + ShipsTypes.get(Ship).Name
