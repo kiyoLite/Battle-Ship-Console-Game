@@ -1,12 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
-
 import java.util.Scanner;
-
 import javax.swing.text.View;
 
-// inforamtion ships
 class InformationShips {
     String Name;
     int Length;
@@ -22,6 +19,11 @@ class InformationShips {
 
 // main class
 public class BattleShip {
+
+    public static void HelpUser() {
+
+    }
+
     public static int[][] CreateAreaGame() {
         Scanner Input = new Scanner(System.in);
         System.out.println("Hello, before we start, let's define the characteristics of the game");
@@ -88,10 +90,49 @@ public class BattleShip {
         System.out.println("by default Player 1 start put your ships ");
 
         AddShiptoGameArea(player1, ViewDirection, ShipsTypes, shipslist);
-
+        PrintGameArea(player1);
         System.out.println("Now player 2 have to put yours ships in the area");
-        AddShiptoGameArea(player2, ViewDirection, ShipsTypes, shipslist);
+        // AddShiptoGameArea(player2, ViewDirection, ShipsTypes, shipslist);
 
+    }
+
+    public static void TorpedoThrowing(int[][] Player) {
+        Scanner Input = new Scanner(System.in);
+        System.out.println("Select the  Row where you want throwing a Torpedo  ");
+        int TorpedoRow = Input.nextInt();
+        System.out.println("Select the  Column where you want throwing a Torpedo  ");
+        int TorpedoColumn = Input.nextInt();
+        System.out.println("throwing...");
+        // simulate a cold down
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            System.out.println("had a error");
+        }
+        Hashtable<Integer, String> ThrowingTorpedoMensage = new Hashtable<>();
+        ThrowingTorpedoMensage.put(0, "you didn't puch any");
+        ThrowingTorpedoMensage.put(1, "you punched a ship ");
+        ThrowingTorpedoMensage.put(-1, "dont punching the sames ships");
+        Player[TorpedoRow][TorpedoColumn] = Player[TorpedoRow][TorpedoColumn] == 1 ? -1 : 0;
+        System.out.println(ThrowingTorpedoMensage.get(Player[TorpedoRow][TorpedoColumn]));
+    }
+
+    public static void PrintGameArea(int[][] PlayerGameArea) {
+        for (int i = 0; i < PlayerGameArea.length; i++) {
+            System.out.println("");
+            for (int j = 0; j < PlayerGameArea[i].length; j++) {
+                System.out.print("|" + PlayerGameArea[i][j] + "|");
+            }
+        }
+    }
+
+    public static boolean AreThereShip(int[][] Player) {
+        for (int i = 0; i < Player.length; i++) {
+            if (Arrays.asList(Player[i]).contains(1))
+                return true;
+
+        }
+        return false;
     }
 
     public static void PlayGame() {
@@ -103,11 +144,8 @@ public class BattleShip {
 
     }
 
-    public static void HelpUser() {
-
-    }
-
     public static void main(String[] arg) {
+
         String PresentationGameMensage = "welcome to BatleShip Game, if you are new , please write \"help\" , else write \"play\" ";
         System.out.println(PresentationGameMensage);
         Scanner Input = new Scanner(System.in);
