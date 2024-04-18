@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Scanner;
 import javax.swing.text.View;
+import org.w3c.dom.css.Counter;
 
 class InformationShips {
     String Name;
@@ -24,7 +25,7 @@ public class BattleShip {
 
     }
 
-    public static int[][] CreateAreaGame() {
+    public static int CreateAreaGame() {
         Scanner Input = new Scanner(System.in);
         System.out.println("Hello, before we start, let's define the characteristics of the game");
         System.out.println("Select a numbers beetwen 5 - 10 for the play area");
@@ -34,7 +35,7 @@ public class BattleShip {
             AreaSpace = Input.nextInt();
         }
 
-        return new int[AreaSpace][AreaSpace];
+        return AreaSpace;
 
     }
 
@@ -90,13 +91,14 @@ public class BattleShip {
         System.out.println("by default Player 1 start put your ships ");
 
         AddShiptoGameArea(player1, ViewDirection, ShipsTypes, shipslist);
-        PrintGameArea(player1);
+
         System.out.println("Now player 2 have to put yours ships in the area");
-        // AddShiptoGameArea(player2, ViewDirection, ShipsTypes, shipslist);
+        AddShiptoGameArea(player2, ViewDirection, ShipsTypes, shipslist);
 
     }
 
-    public static void TorpedoThrowing(int[][] Player) {
+    public static String TorpedoThrowing(int[][] SelectPlayer, int Counter, int[][] Player1, int[][] Player2) {
+        System.out.println("------Player" + Counter + "-----");
         Scanner Input = new Scanner(System.in);
         System.out.println("Select the  Row where you want throwing a Torpedo  ");
         int TorpedoRow = Input.nextInt();
@@ -113,8 +115,14 @@ public class BattleShip {
         ThrowingTorpedoMensage.put(0, "you didn't puch any");
         ThrowingTorpedoMensage.put(1, "you punched a ship ");
         ThrowingTorpedoMensage.put(-1, "dont punching the sames ships");
-        Player[TorpedoRow][TorpedoColumn] = Player[TorpedoRow][TorpedoColumn] == 1 ? -1 : 0;
-        System.out.println(ThrowingTorpedoMensage.get(Player[TorpedoRow][TorpedoColumn]));
+        System.out.println(ThrowingTorpedoMensage.get(SelectPlayer[TorpedoRow][TorpedoColumn]));
+        SelectPlayer[TorpedoRow][TorpedoColumn] = SelectPlayer[TorpedoRow][TorpedoColumn] == 1 ? -1 : 0;
+        if (AreThereShip(SelectPlayer) == false)
+            return "player" + Counter + "win";
+        Counter = Counter > 1 ? --Counter : ++Counter;
+        if (Counter > 1)
+            return TorpedoThrowing(Player1, Counter, Player1, Player2);
+        return TorpedoThrowing(Player2, Counter, Player1, Player2);
     }
 
     public static void PrintGameArea(int[][] PlayerGameArea) {
@@ -124,24 +132,26 @@ public class BattleShip {
                 System.out.print("|" + PlayerGameArea[i][j] + "|");
             }
         }
+        System.out.println("");
     }
 
     public static boolean AreThereShip(int[][] Player) {
-        for (int i = 0; i < Player.length; i++) {
-            if (Arrays.asList(Player[i]).contains(1))
-                return true;
-
+        for (int[] i : Player) {
+            for (int j : i) {
+                if (j == 1)
+                    return true;
+            }
         }
         return false;
     }
 
     public static void PlayGame() {
-        int[][] Save2Dmatrix = CreateAreaGame();
-        int[][] Player1AreaSpace, Player2AreaSpace = Save2Dmatrix;
-        Player1AreaSpace = Save2Dmatrix;
+        int CreateAreaGame = CreateAreaGame();
+        int[][] Player1AreaSpace = new int[CreateAreaGame][CreateAreaGame];
+        int[][] Player2AreaSpace = new int[CreateAreaGame][CreateAreaGame];
         AddShip(Player1AreaSpace, Player2AreaSpace);
-        // System.out.println(Arrays.deepToString(Player1AreaSpace));
-
+        String WinMensage = TorpedoThrowing(Player2AreaSpace, 1, Player1AreaSpace, Player2AreaSpace);
+        System.out.println(WinMensage);
     }
 
     public static void main(String[] arg) {
