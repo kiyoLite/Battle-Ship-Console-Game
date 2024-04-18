@@ -62,8 +62,8 @@ public class BattleShip {
                 } else if (ViewDirection.equals("up")) {
                     try {
                         // there is an error here
-                        for (int j = Row; j < ShipsTypes.get(Ship).Length + Row; j--) {
-                            Player[Row][Column] = 1;
+                        for (int j = 0; j < ShipsTypes.get(Ship).Length; j++) {
+                            Player[Row - j][Column] = 1;
                         }
                     } catch (Exception e) {
                         System.out.println("the" + ShipsTypes.get(Ship).Name
