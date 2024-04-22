@@ -1,9 +1,6 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Scanner;
-import javax.swing.text.View;
-import org.w3c.dom.css.Counter;
 
 class InformationShips {
     String Name;
@@ -21,19 +18,26 @@ class InformationShips {
 // main class
 public class BattleShip {
 
+    public static int InputUser(int MinHopeValue, int MaxHopeValue, String Message) {
+        System.out.println(Message);
+        Scanner Sc = new Scanner(System.in);
+        int Input = Sc.nextInt();
+        while (Input < MinHopeValue || Input > MaxHopeValue) {
+            System.out.println("you have to enter a valild input");
+            Input = Sc.nextInt();
+        }
+        return Input;
+    }
+
     public static void HelpUser() {
 
     }
 
     public static int CreateAreaGame() {
-        Scanner Input = new Scanner(System.in);
+
         System.out.println("Hello, before we start, let's define the characteristics of the game");
-        System.out.println("Select a numbers beetwen 5 - 10 for the play area");
-        int AreaSpace = Input.nextInt();
-        while (AreaSpace < 5 || AreaSpace > 10) {
-            System.out.println("you\'ve a mistake , try over put a valid input");
-            AreaSpace = Input.nextInt();
-        }
+
+        int AreaSpace = InputUser(5, 10, "Select a numbers beetwen 5 - 10 for the play area");
 
         return AreaSpace;
 
@@ -44,12 +48,13 @@ public class BattleShip {
         Scanner Input = new Scanner(System.in);
         for (String Ship : shipslist) {
             for (int i = 0; i < ShipsTypes.get(Ship).Quantity; i++) {
-                System.out.println("select a column to put your " + Ship + " , remember , this ship takes up a : "
-                        + ShipsTypes.get(Ship).Length + "units");
-                int Column = Input.nextInt();
-                System.out.println("select a row to put your " + Ship + " , remember , this ship takes up a :"
-                        + ShipsTypes.get(Ship).Length + "units");
-                int Row = Input.nextInt();
+                int Column = InputUser(0, Player[0].length,
+                        "select a column to put your " + Ship + " , remember , this ship takes up a : "
+                                + ShipsTypes.get(Ship).Length + " units");
+
+                int Row = InputUser(0, Player[0].length,
+                        "select a Row to put your " + Ship + " , remember , this ship takes up a : "
+                                + ShipsTypes.get(Ship).Length + " units");
                 if (ViewDirection.equals("right")) {
                     try {
                         for (int j = 0; j < ShipsTypes.get(Ship).Length; j++) {
